@@ -59,6 +59,7 @@ const Opplastning = () => {
       userFile.longitude = (await exifr.gps(imageFile)).longitude;
       //må hente ut disse for så å hente ut verdiene fra arrayen
       const gpsAlt = await exifr.parse(imageFile, ["GPSAltitude"]);
+      // Kompassretning 
       const gpsDirection = await exifr.parse(imageFile, ["GPSImgDirection"]);
 
       userFile.GPSAltitude = gpsAlt.GPSAltitude;

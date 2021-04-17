@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Map, TileLayer } from "react-leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import LocateControl from "../LocateControl";
 import Control from "react-leaflet-control";
 import Select from "react-select";
@@ -7,6 +7,7 @@ import {Dropdown, DropdownToggle, DropdownMenu, Card, CardTitle} from 'reactstra
 import SearchField from "react-search-field";
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 
+import * as e6kaaData from '../../data/e6kaa.json';
 import DateInfo from '../infoToolTips/DateInfo';
 import CategoryInfo from '../infoToolTips/CategoryInfo';
 import ProjectInfo from '../infoToolTips/ProjectInfo';
@@ -16,6 +17,7 @@ import { FaSearch } from "react-icons/fa";
 import "./Map.css";
 
 //import {gpsDirectionMarker, positionMarker} from '../Markers';
+// Rotere markørene 
 //import 'leaflet-rotatedmarker';
 
 // Options for the different projects
@@ -55,6 +57,10 @@ export default class Kart extends Component {
     dates: null,
   };
 
+  componentDidMount() {
+    console.log(e6kaaData.features);
+  }
+
   handleChange = (selectedOption) => {
     this.setState({
       location: {
@@ -64,7 +70,7 @@ export default class Kart extends Component {
       selectedOption,
       zoom: 11,
     });
-  }  
+  } 
 
 
   render() {
@@ -81,6 +87,7 @@ export default class Kart extends Component {
       onActive: () => {}, // callback before engine starts retrieving locations
     };
 
+
     return (
       <div className="app">
         <Map
@@ -89,11 +96,15 @@ export default class Kart extends Component {
           zoom={this.state.zoom}
           zoomControl={false}
         >
+
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <LocateControl options={locateOptions} />
+
+          <GeoJSON color="red" data={e6kaaData.features} />
+
 
           <Control position="topright">
             <Dropdown isOpen={dropdownOpen} toggle={() => { this.setState({ dropdownOpen: !this.state.dropdownOpen }); }}>
