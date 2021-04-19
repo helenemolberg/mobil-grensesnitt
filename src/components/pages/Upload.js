@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import exifr from "exifr";
 import './Upload.css';
-//import { sendFile } from "../API";
+import { sendFile } from "../../API";
 
 // Import React FilePond
 import { FilePond, registerPlugin } from "react-filepond";
@@ -97,14 +97,13 @@ const Opplastning = () => {
     console.log("Structure of formdata" + [...formData]);
 
     //Sends userFile to API -> DB
-    /*
     try {
       await sendFile(formData);
       alert("Informasjonen har blitt lastet opp");
       
     } catch (error) {
       console.error(error);
-    }*/
+    }
   };
 
 
