@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:1337/api/images';
+const API_URL = 'http://mobil-master.herokuapp.com/api/images';
 
 // Fetches all data
 export async function getImages() {
