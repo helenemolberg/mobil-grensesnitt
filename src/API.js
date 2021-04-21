@@ -15,22 +15,9 @@ export async function getFilesProject(prosjekt) {
 
 // Fetches the pictures
 export async function getPictures(filename) {
-    /*
-    const res = await fetch(`${API_URL}/image/${filename}`).then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('error...');
-        }
-    })
-    .then(responseJson => {
-        return responseJson.data;
-    });
-    //const text = await response.json();
-    //return text.data; */
     const response = await fetch(`${API_URL}/image/${filename}`);
     const text = await response.json();
-    console.log(text);
+    //console.log(text);
     return text;
 }
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Map, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import LocateControl from "../LocateControl";
@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import SearchField from "react-search-field";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
-import hash from 'object-hash';
+import hash from "object-hash";
 
 import { getPictures, getImages, getFilesProject } from "../../API";
 import * as e6kaaData from "../../data/e6kaa.json";
@@ -74,10 +74,8 @@ export default class Kart extends Component {
       this.setState({
         images: images.images,
       });
-
     });
   }
-
 
   handleChange = (selectedOption) => {
     this.setState({
@@ -90,22 +88,29 @@ export default class Kart extends Component {
     });
 
     // SORTERER PÅ PROSJEKT
-    getFilesProject(selectedOption.label)
-    .then(images => {
+    getFilesProject(selectedOption.label).then((images) => {
       this.setState({
-        images: images.files
+        images: images.files,
       });
     });
-  }
+  };
 
-  handlePictures = (name) => {
-    console.log(getPictures(name));
+  handlePictures = () => {
     /*
-    Promise.resolve(getPictures(name)).then(function (value) {
-      //console.log(value);
-      return value;
-    })*/
-  }
+    await getPictures(name).then(res => {
+      this.setState({
+        imageURLS: res,
+      });
+    });*
+    //console.log(result);
+    /*
+    Promise.resolve(getPictures(name)).then(result => {
+      console.log(result);
+      //return result;
+    }).catch ((error) => {
+      console.log('Error: ' + error);
+    });*/
+  };
 
   // Shows a popup for each area in E6KAA geoJSON
   onEachFeature = (feature, layer) => {
@@ -114,8 +119,7 @@ export default class Kart extends Component {
       popupContent += feature.properties.popupContent;
     }
     layer.bindPopup(popupContent);
-  }
-
+  };
 
   render() {
     const position = [this.state.location.lat, this.state.location.lng];
@@ -134,6 +138,50 @@ export default class Kart extends Component {
       onActive: () => {}, // callback before engine starts retrieving locations
     };
 
+    // Lager markører og får frem bildene <33
+    const ImageMarker = ({ image }) => {
+      const [src, setSrc] = React.useState();
+      useEffect(() => {
+        getPictures(image.imageName).then((text) => setSrc(text));
+      }, [image.imageName]);
+      return (
+        <Marker
+          key={image._id}
+          position={[image.latitude, image.longitude]}
+          icon={gpsDirectionMarker}
+          rotationAngle={image.GPSImgDirection}
+        >
+          <Popup>
+            <b>Prosjekt: </b>
+            {image.prosjekt} {image.prosjektOmrade}
+            <p />
+            <b>Parsell: </b>
+            {image.parsell}
+            <p />
+            <b>Kommentar: </b>
+            {image.kommentar}
+            <p />
+            <b>Kategori: </b>
+            {image.kategori}
+            <p />
+            <b>Høydemeter: </b>
+            {image.GPSAltitude}
+            <p />
+            <b>Dato tatt: </b>
+            {image.captureDate}
+            <p />
+            <img
+              src={src}
+              width="120"
+              height="auto"
+              center
+              alt={image.imageName}
+            />
+          </Popup>
+        </Marker>
+      );
+    };
+
     return (
       <div className="app">
         <Map
@@ -149,12 +197,12 @@ export default class Kart extends Component {
           <LocateControl options={locateOptions} />
 
           {this.state.e6JSON.length > 0 && (
-            <GeoJSON 
-              key={hash(e6JSON)} 
-              color="blue" 
-              data={e6JSON} 
-              fill="true" 
-              fillColor="blue" 
+            <GeoJSON
+              key={hash(e6JSON)}
+              color="blue"
+              data={e6JSON}
+              fill="true"
+              fillColor="blue"
               fillOpacity="0.1"
               onEachFeature={this.onEachFeature}
             />
@@ -211,39 +259,7 @@ export default class Kart extends Component {
           <MarkerClusterGroup>
             {this.state.images.length > 0 &&
               this.state.images.map((image) => (
-                <Marker
-                  key={image._id}
-                  position={[image.latitude, image.longitude]}
-                  icon={gpsDirectionMarker}
-                  rotationAngle={image.GPSImgDirection}
-                >
-                  <Popup>
-                    <b>Prosjekt: </b>
-                    {image.prosjekt} {image.prosjektOmrade}
-                    <p />
-                    <b>Parsell: </b>
-                    {image.parsell}
-                    <p />
-                    <b>Kommentar: </b>
-                    {image.kommentar}
-                    <p />
-                    <b>Kategori: </b>
-                    {image.kategori}
-                    <p />
-                    <b>Høydemeter: </b>
-                    {image.GPSAltitude}
-                    <p />
-                    <b>Dato tatt: </b>
-                    {image.captureDate}
-                    <p />
-                    <img
-                      src={`"${this.handlePictures(image.imageName)}"`}
-                      width="100"
-                      height="100"
-                      alt={image.imageName}
-                    />
-                  </Popup>
-                </Marker>
+                <ImageMarker image={image}/>
               ))}
           </MarkerClusterGroup>
         </Map>
