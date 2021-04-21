@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import SearchField from "react-search-field";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import hash from 'object-hash';
 
 import { getPictures, getImages, getFilesProject } from "../../API";
 import * as e6kaaData from "../../data/e6kaa.json";
@@ -65,6 +66,7 @@ export default class Kart extends Component {
     dates: null,
     images: [],
     imageURLS: [],
+    e6JSON: e6kaaData.features,
   };
 
   componentDidMount() {
@@ -97,16 +99,29 @@ export default class Kart extends Component {
   }
 
   handlePictures = (name) => {
+    console.log(getPictures(name));
+    /*
     Promise.resolve(getPictures(name)).then(function (value) {
-      console.log(value);
+      //console.log(value);
       return value;
-    })
+    })*/
   }
+
+  // Shows a popup for each area in E6KAA geoJSON
+  onEachFeature = (feature, layer) => {
+    let popupContent = `Layer: ${feature.properties.Layer} <br> Entity Handle: ${feature.properties.EntityHandle}`;
+    if (feature.properties && feature.properties.popupContent) {
+      popupContent += feature.properties.popupContent;
+    }
+    layer.bindPopup(popupContent);
+  }
+
 
   render() {
     const position = [this.state.location.lat, this.state.location.lng];
     const dropdownOpen = this.state.dropdownOpen;
     const selectedOption = this.state;
+    const e6JSON = this.state.e6JSON;
 
     console.log(this.state.images);
 
@@ -133,7 +148,17 @@ export default class Kart extends Component {
           />
           <LocateControl options={locateOptions} />
 
-          <GeoJSON color="red" data={e6kaaData.features} />
+          {this.state.e6JSON.length > 0 && (
+            <GeoJSON 
+              key={hash(e6JSON)} 
+              color="blue" 
+              data={e6JSON} 
+              fill="true" 
+              fillColor="blue" 
+              fillOpacity="0.1"
+              onEachFeature={this.onEachFeature}
+            />
+          )}
 
           <Control position="topright">
             <Dropdown

@@ -2,7 +2,6 @@ const API_URL = 'https://mobil-master.herokuapp.com/api/images';
 
 // Fetches all data
 export async function getImages() {
-    //console.log("mmm: ", API_URL);
     const response = await fetch(API_URL);
     return response.json();
 }
@@ -31,8 +30,8 @@ export async function getPictures(filename) {
     //return text.data; */
     const response = await fetch(`${API_URL}/image/${filename}`);
     const text = await response.json();
-    //console.log(text.data);
-    return text.data;
+    console.log(text);
+    return text;
 }
 
 // Sort on DateRange
