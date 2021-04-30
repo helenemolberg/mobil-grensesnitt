@@ -33,10 +33,7 @@ export async function getDateRange(value) {
 export function sendFile(entry) {
     return fetch(API_URL, {
         method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(entry),
+        body: entry,
     })
     .then(res => res.json())
     .then(data => console.log(data))
