@@ -17,6 +17,7 @@ import hash from "object-hash";
 
 import { getPictures, getImages, getFilesProject } from "../../API";
 import * as e6kaaData from "../../data/e6kaa.json";
+import * as e39MandalData from '../../data/E39Mandal.json';
 import DateInfo from "../infoToolTips/DateInfo";
 import CategoryInfo from "../infoToolTips/CategoryInfo";
 import ProjectInfo from "../infoToolTips/ProjectInfo";
@@ -67,6 +68,7 @@ export default class Kart extends Component {
     images: [],
     imageURLS: [],
     e6JSON: e6kaaData.features,
+    e39MandalData: e39MandalData.features,
   };
 
   componentDidMount() {
@@ -95,22 +97,6 @@ export default class Kart extends Component {
     });
   };
 
-  handlePictures = () => {
-    /*
-    await getPictures(name).then(res => {
-      this.setState({
-        imageURLS: res,
-      });
-    });*
-    //console.log(result);
-    /*
-    Promise.resolve(getPictures(name)).then(result => {
-      console.log(result);
-      //return result;
-    }).catch ((error) => {
-      console.log('Error: ' + error);
-    });*/
-  };
 
   // Shows a popup for each area in E6KAA geoJSON
   onEachFeature = (feature, layer) => {
@@ -126,6 +112,7 @@ export default class Kart extends Component {
     const dropdownOpen = this.state.dropdownOpen;
     const selectedOption = this.state;
     const e6JSON = this.state.e6JSON;
+    const e39MandalData = this.state.e39MandalData;
 
     console.log(this.state.images);
 
@@ -194,7 +181,7 @@ export default class Kart extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <LocateControl options={locateOptions} />
+          <LocateControl style={{position:"relative"}} options={locateOptions} />
 
           {this.state.e6JSON.length > 0 && (
             <GeoJSON
@@ -207,9 +194,20 @@ export default class Kart extends Component {
               onEachFeature={this.onEachFeature}
             />
           )}
+          {this.state.e39MandalData.length > 0 && (
+            <GeoJSON
+              key={hash(e39MandalData)}
+              color="blue"
+              data={e39MandalData}
+              fill="true"
+              fillColor="blue"
+              fillOpacity="0.1"
+            />
+          )}
 
           <Control position="topright">
             <Dropdown
+              style={{position: "relative"}}
               isOpen={dropdownOpen}
               toggle={() => {
                 this.setState({ dropdownOpen: !this.state.dropdownOpen });
