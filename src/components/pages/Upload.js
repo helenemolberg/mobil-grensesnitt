@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import {format} from 'date-fns';
 import exifr from "exifr";
-import crypto from 'crypto';
 import './Upload.css';
 import { sendFile } from "../../API";
 
