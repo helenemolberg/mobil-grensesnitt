@@ -48,7 +48,7 @@ const Opplastning = () => {
     // For å findre at filename vil være det samme ved å bruke mobilen til og ta bilder
     // bruker jeg crypto til å generere et navn til de gjeldende bildene
     if(imageFile.name === "image.jpg") {
-      userFile.imageName = "kamera-"+ Date.now() + "." + imageFile.type;
+      userFile.imageName = "kamera-"+ Date.now() + "." + "jpeg";
     }else {
       userFile.imageName = imageFile.name;
     }
