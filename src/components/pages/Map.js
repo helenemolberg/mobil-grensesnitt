@@ -145,6 +145,12 @@ export default class Kart extends Component {
             <b>Parsell: </b>
             {image.parsell}
             <p />
+            <b>Profilnummer: </b>
+            {image.profilnr}
+            <p />
+            <b>Objektnummer: </b>
+            {image.objektnr}
+            <p />
             <b>Kommentar: </b>
             {image.kommentar}
             <p />
