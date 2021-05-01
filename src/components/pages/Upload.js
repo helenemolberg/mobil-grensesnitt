@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
-import {format, parse} from 'date-fns';
+import {format} from 'date-fns';
 import exifr from "exifr";
 import './Upload.css';
 import { sendFile } from "../../API";
@@ -32,7 +32,7 @@ const Opplastning = () => {
     GPSImgDirection: "",
     imageName: "",
     imageType: "",
-    captureDate: Date,
+    captureDate: String,
   };
 
   const handleSubmit = async (event) => {
@@ -50,8 +50,7 @@ const Opplastning = () => {
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
     // Safari & IE browsers do not support the date format "yyyy-mm-dd"
-    const fixDateForAllBrowsers = format(parse('', '', new Date(imageFile.lastModifiedDate)), 'dd/MM/yyyy');
-    userFile.captureDate = fixDateForAllBrowsers;
+    userFile.captureDate = format(imageFile.lastModified, 'dd/MM/yyyy');
 
     console.log(userFile.captureDate); 
 
@@ -107,6 +106,7 @@ const Opplastning = () => {
       alert("Informasjonen har blitt lastet opp");
       
     } catch (error) {
+      alert(error);
       console.error(error);
     }
   };

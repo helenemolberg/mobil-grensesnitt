@@ -37,5 +37,5 @@ export function sendFile(entry) {
     })
     .then(res => res.json())
     .then(data => console.log(data))
-    .catch(error => {console.error(error) });
+    .catch(error => {console.error(error); alert(error) });
 }
