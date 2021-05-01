@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import {format} from 'date-fns';
 import exifr from "exifr";
 import './Upload.css';
 import { sendFile } from "../../API";
@@ -48,7 +49,7 @@ const Opplastning = () => {
     userFile.imageName = imageFile.name;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
-    userFile.captureDate = new Date(imageFile.lastModifiedDate);
+    userFile.captureDate = format(new Date(imageFile.lastModifiedDate), 'dd/MM/yyyy');
 
     //Sjekke om det finnes gps-verdier i filen
     let exifrOutput = await exifr.gps(imageFile).catch(console.error)
@@ -132,30 +133,50 @@ const Opplastning = () => {
           name="parsell"
           id="parsell"
           placeholder="Parselnummer"
-          required
         />
       </FormGroup>
       <FormGroup>
-          <Label className="form-label" for="kommentar">Kommentar</Label>
-          <Input type="textarea" name="kommentar" id="kommentar"/>
+        <Label className="form-label" for="profilnr">Profilnummer</Label>
+        <Input
+          type="number"
+          name="profilnr"
+          id="profilnr"
+          placeholder="Profilnummer"
+        />
+      </FormGroup>
+      <FormGroup>
+        <Label className="form-label" for="objektnr">Objektnummer</Label>
+        <Input
+          type="number"
+          name="objektnr"
+          id="objektnr"
+          placeholder="Objektnummer"
+        />
       </FormGroup>
       <FormGroup>
         <Label className="form-label" for="kategori">Kategori</Label>
         <Input type="select" name="kategori" id="kategori" multiple>
+          <option>Boring</option>
           <option>Elektro</option>
           <option>Fjellsikring</option>
           <option>Fundamentering</option>
           <option>Geomatikk</option>
           <option>Konstruksjon</option>
+          <option>Markedsbilder</option>
           <option>Riving og sanering</option>
+          <option>Spregning</option>
           <option>Tunnel</option>
           <option>Vann og avløp</option>
           <option>Veg</option>
-          <option>Markedsbilder</option>
+          <option>Annet</option>
         </Input>
         <FormText color="muted">
-          Velg flere kategorier ved å holde inne "command" eller "Alt" på tastaturet.
+          PC: Velg flere kategorier ved å holde inne "command" eller "Alt" på tastaturet.
         </FormText>
+      </FormGroup>
+      <FormGroup>
+          <Label className="form-label" for="kommentar">Kommentar</Label>
+          <Input type="textarea" name="kommentar" id="kommentar"/>
       </FormGroup>
       <FormGroup>
         <FilePond 
@@ -169,7 +190,7 @@ const Opplastning = () => {
       </FormGroup>
       <FormGroup check>
         <Label check>
-          <Input type="checkbox" required /> Godta at Hæhre kan bruke bildene
+          <Input type="checkbox" required /> Godta at Hæhre kan bruke bildene *
         </Label>
       </FormGroup>
       <div className="button-form">

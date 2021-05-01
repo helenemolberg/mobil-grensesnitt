@@ -181,7 +181,7 @@ export default class Kart extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <LocateControl style={{position:"relative"}} options={locateOptions} />
+          <LocateControl options={locateOptions} />
 
           {this.state.e6JSON.length > 0 && (
             <GeoJSON
