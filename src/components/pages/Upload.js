@@ -49,7 +49,7 @@ const Opplastning = () => {
     userFile.imageName = imageFile.name;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
-    userFile.captureDate = format(new Date((imageFile.lastModifiedDate).replace(/\s/, 'T')), 'dd/MM/yyyy');
+    userFile.captureDate = new Date(imageFile.lastModifiedDate.replace(/-/g, '/'));
 
     //Sjekke om det finnes gps-verdier i filen
     let exifrOutput = await exifr.gps(imageFile).catch(console.error)
