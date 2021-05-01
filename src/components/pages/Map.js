@@ -181,7 +181,9 @@ export default class Kart extends Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <LocateControl options={locateOptions} />
+          <div className="locateControl"> 
+          <LocateControl className="locateControl" options={locateOptions} />
+          </div>
 
           {this.state.e6JSON.length > 0 && (
             <GeoJSON
@@ -205,7 +207,7 @@ export default class Kart extends Component {
             />
           )}
 
-          <Control position="topright">
+          <Control position="topright" className="controlSearch">
             <Dropdown
               style={{position: "relative"}}
               isOpen={dropdownOpen}

@@ -32,7 +32,7 @@ const Opplastning = () => {
     GPSImgDirection: "",
     imageName: "",
     imageType: "",
-    captureDate: Date,
+    captureDate: String,
   };
 
   const handleSubmit = async (event) => {
