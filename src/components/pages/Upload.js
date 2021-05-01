@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
-import {format} from 'date-fns';
+import {format, parse} from 'date-fns';
 import exifr from "exifr";
 import './Upload.css';
 import { sendFile } from "../../API";
@@ -49,7 +49,11 @@ const Opplastning = () => {
     userFile.imageName = imageFile.name;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
-    userFile.captureDate = new Date(imageFile.lastModifiedDate.replace(/-/g, '/'));
+    // Safari & IE browsers do not support the date format "yyyy-mm-dd"
+    const fixDateForAllBrowsers = format(parse('', '', new Date(imageFile.lastModifiedDate)), 'dd/MM/yyyy');
+    userFile.captureDate = fixDateForAllBrowsers;
+
+    console.log(userFile.captureDate); 
 
     //Sjekke om det finnes gps-verdier i filen
     let exifrOutput = await exifr.gps(imageFile).catch(console.error)
