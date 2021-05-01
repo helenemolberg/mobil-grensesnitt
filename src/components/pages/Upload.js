@@ -49,7 +49,7 @@ const Opplastning = () => {
     // For å findre at filename vil være det samme ved å bruke mobilen til og ta bilder
     // bruker jeg crypto til å generere et navn til de gjeldende bildene
     if(imageFile.name === "image.jpg") {
-      userFile.imageName = crypto.randomBytes(64).toString('hex');
+      userFile.imageName = crypto.randomBytes(8).toString('hex');
     }else {
       userFile.imageName = imageFile.name;
     }
