@@ -10,9 +10,10 @@ import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileRename from 'filepond-plugin-file-rename';
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 // Register the plugins
-registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileRename);
 
 
 
@@ -34,6 +35,7 @@ const Opplastning = () => {
     imageType: "",
     captureDate: String,
   };
+
 
   const handleSubmit = async (event) => {
     //Henter svarene fra formen
@@ -195,10 +197,12 @@ const Opplastning = () => {
         <FilePond 
          files={files}
          onupdatefiles={setFiles}
+         allowFileRename
+         fileRenameFunction={file => Date.now() + "-" + file.basename + file.extension}
          name="filepond"
          id="filepond"
          acceptedFileTypes={fileTypesAccepted}
-         labelIdle='Dra & Slippe filene eller <span class="filepond--label-action"> Bla Gjennom </span>'
+         labelIdle='Trykk & Slippe filene eller <span class="filepond--label-action"> Bla Gjennom </span>'
         />
       </FormGroup>
       <FormGroup check>

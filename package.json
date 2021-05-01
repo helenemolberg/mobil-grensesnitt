@@ -12,6 +12,7 @@
     "date-fns": "^2.21.1",
     "exifr": "^6.2.0",
     "filepond": "^4.27.0",
+    "filepond-plugin-file-rename": "^1.1.8",
     "filepond-plugin-file-validate-type": "^1.2.5",
     "filepond-plugin-image-preview": "^4.6.5",
     "leaflet": "^1.7.1",
