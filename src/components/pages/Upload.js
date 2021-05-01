@@ -50,10 +50,13 @@ const Opplastning = () => {
     // bruker jeg crypto til å generere et navn til de gjeldende bildene
     if(imageFile.name === "image.jpg") {
       userFile.imageName = crypto.randomBytes(64).toString('hex');
+    }else {
+      userFile.imageName = imageFile.name;
     }
-    
+
+    console.log(userFile.imageName);
+
     userFile.imageType = imageFile.type;
-    userFile.imageName = imageFile.name;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
     // Safari & IE browsers do not support the date format "yyyy-mm-dd"
