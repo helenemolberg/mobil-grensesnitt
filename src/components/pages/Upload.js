@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import {format} from 'date-fns';
 import exifr from "exifr";
+import crypto from 'crypto';
 import './Upload.css';
 import { sendFile } from "../../API";
 
@@ -44,7 +45,13 @@ const Opplastning = () => {
     formData.set("bildefil", files[0].file);
     const imageFile = formData.get("bildefil");
 
-    //Lagrer alt som trengs fra Form og bildefil
+    // Lagrer alt som trengs fra Form og bildefil
+    // For å findre at filename vil være det samme ved å bruke mobilen til og ta bilder
+    // bruker jeg crypto til å generere et navn til de gjeldende bildene
+    if(imageFile.name === "image.jpg") {
+      userFile.imageName = crypto.randomBytes(64).toString('hex');
+    }
+    
     userFile.imageType = imageFile.type;
     userFile.imageName = imageFile.name;
 
