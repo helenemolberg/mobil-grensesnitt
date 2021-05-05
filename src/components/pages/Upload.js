@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import {format} from 'date-fns';
 import exifr from "exifr";
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import './Upload.css';
 import { sendFile } from "../../API";
 
@@ -37,7 +37,6 @@ const Opplastning = () => {
     captureDate: String,
   };
 
-
   const handleSubmit = async (event) => {
     //Henter svarene fra formen
     const formData = new FormData(event.target);
@@ -47,8 +46,8 @@ const Opplastning = () => {
     formData.set("bildefil", files[0].file);
     const imageFile = formData.get("bildefil");
 
-    userFile.imageName = imageFile.name;
     userFile.imageType = imageFile.type;
+    userFile.imageName = uuidv4() + "-" + imageFile.name;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
     // Safari & IE browsers do not support the date format "yyyy-mm-dd"
@@ -189,7 +188,6 @@ const Opplastning = () => {
          files={files}
          onupdatefiles={setFiles}
          allowFileRename
-         fileRenameFunction={file => crypto.randomBytes(8) + "-" + file.basename + file.extension}
          name="filepond"
          id="filepond"
          acceptedFileTypes={fileTypesAccepted}
