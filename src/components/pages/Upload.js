@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import {format} from 'date-fns';
 import exifr from "exifr";
+import crypto from 'crypto';
 import './Upload.css';
 import { sendFile } from "../../API";
 
@@ -46,17 +47,7 @@ const Opplastning = () => {
     formData.set("bildefil", files[0].file);
     const imageFile = formData.get("bildefil");
 
-    // Lagrer alt som trengs fra Form og bildefil
-    // For å findre at filename vil være det samme ved å bruke mobilen til og ta bilder
-    // bruker jeg crypto til å generere et navn til de gjeldende bildene
-    if(imageFile.name === "image.jpg") {
-      userFile.imageName = "kamera-"+ Date.now() + ".jpg";
-    }else {
-      userFile.imageName = imageFile.name;
-    }
-
-    console.log(userFile.imageName);
-
+    userFile.imageName = imageFile.name;
     userFile.imageType = imageFile.type;
 
     //Lagrer dato fra lastModifiedDate -> er den nøyaktig nok??
@@ -198,11 +189,11 @@ const Opplastning = () => {
          files={files}
          onupdatefiles={setFiles}
          allowFileRename
-         fileRenameFunction={file => Date.now() + "-" + file.basename + file.extension}
+         fileRenameFunction={file => crypto.randomBytes(8) + "-" + file.basename + file.extension}
          name="filepond"
          id="filepond"
          acceptedFileTypes={fileTypesAccepted}
-         labelIdle='Trykk & Slippe filene eller <span class="filepond--label-action"> Bla Gjennom </span>'
+         labelIdle='Trykk eller Slipp filene, eller <span class="filepond--label-action"> Bla Gjennom </span>'
         />
       </FormGroup>
       <FormGroup check>
