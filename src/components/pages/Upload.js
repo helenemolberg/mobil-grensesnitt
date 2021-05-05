@@ -43,10 +43,8 @@ const Opplastning = () => {
     //error handler(?)
     event.preventDefault();
     //Putter inn fil fra filepond inn i bildefil også henter ut denne
-    formData.set("bildefil", files[0].file);
+    formData.set("bildefil", files[0].file, files[0].file.name);
     const imageFile = formData.get("bildefil");
-
-    console.log(files[0].file);
 
     userFile.imageType = imageFile.type;
     // kunne ikke bruke imageFile - ble blob
