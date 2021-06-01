@@ -120,7 +120,7 @@ const Opplastning = () => {
       onSubmit={handleSubmit}
       className="body"
     >
-        <h3 className="form-title">Opplastning av bilder</h3>
+        <h3 className="form-title">Opplasting av bilder</h3>
       <FormGroup>
         <Label className="form-label" for="prosjekt">Prosjekt</Label>
         <Input
